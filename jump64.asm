@@ -71,7 +71,7 @@ Realm64:
     mov gs, ax
     
     ;;mov ss, ax        ; WARNING: everything crashes, when SS is loaded!!! VERY WRONG
-
+	 
     					; Thair HASSAN  : (08/10/2019)
 						; code works fine without setting ss in QEMU
 						; but on real hardware it crashes and gives #GPF on every interrupt
