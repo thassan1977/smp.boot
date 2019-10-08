@@ -70,7 +70,20 @@ Realm64:
     mov fs, ax
     mov gs, ax
     
-    ;;mov ss, ax                 ; WARNING: everything crashes, when SS is loaded!!!
+    ;;mov ss, ax        ; WARNING: everything crashes, when SS is loaded!!! VERY WRONG
+
+    					; Thair HASSAN  : (08/10/2019)
+						; code works fine without setting ss in QEMU
+						; but on real hardware it crashes and gives #GPF on every interrupt
+						; -----------------------------------------------------------------
+    mov bx, 0			; also long mode ignores most segment registers 
+    mov ss, bx			; but not SS and CS it's very crucial to set SS=0
+						; never leave SS points to null descriptor
+						; otherwise you would get General protection fault #GPF
+						; on any interrupt exactly on IRETQ operation
+						; a very hard lesson learned :(
+						; AMD64 Architecture Programmer’s Manual Volume 2 : System Programming (chapter 8)
+
     ;mov rsp, Realm32            ; all below is no more needed...
                                 ; (except multiboot_info_t, but the stack will not grow that fast...)
     ; Realm32 is 0x140000 (0x40000 above 1MB).
